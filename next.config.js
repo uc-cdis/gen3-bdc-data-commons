@@ -3,8 +3,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dns = require('dns');
 
-const basePath = process.env.NEXT_PUBLIC_BASEPATH;
-
 dns.setDefaultResultOrder('ipv4first');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -31,22 +29,13 @@ const nextConfig = {
     version: process.env.npm_package_version,
   },
   reactStrictMode: true,
-  experimental: {
-    esmExternals: true,
-    instrumentationHook: true,
-    optimizePackageImports: ['@gen3/frontend', '@gen3/core'],
-    turbo: {
-      moduleIdStrategy: 'deterministic',
-    },
-  },
   pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
-  transpilePackages: ['@gen3/frontend'],
-  basePath: '/ff',
+  basePath: process.env.BASE_PATH || '/ff',
+  transpilePackages: ['@gen3/core', '@gen3/frontend'],
   webpack: (config) => {
     config.infrastructureLogging = {
       level: 'error',
     };
-
     return config;
   },
   async rewrites() {
@@ -112,23 +101,6 @@ const nextConfig = {
           {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN',
-          },
-        ],
-      },
-      {
-        source: '/jupyter/(.*)?',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-          {
-            key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp',
-          },
-          {
-            key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin',
           },
         ],
       },
