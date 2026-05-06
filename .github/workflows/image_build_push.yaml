@@ -26,11 +26,7 @@ jobs:
         id: pick
         shell: bash
         run: |
-          if [ "${{ github.event.repository.fork }}" = "true" ]; then
             echo "DOCKERFILE_LOCATION=Dockerfile.production" >> "$GITHUB_OUTPUT"
-          else
-            echo "DOCKERFILE_LOCATION=Dockerfile.config" >> "$GITHUB_OUTPUT"
-          fi
 
   Security:
     name: Security Pipeline
